@@ -25,7 +25,7 @@ private:
   Highlighter *highlighter;
   QProcess process;
   void setUpHighlighter();
-  //---------è®°å½•æ–‡ä»¶ä¿¡æ¯----------
+  //---------¼ÇÂ¼ÎÄ¼şĞÅÏ¢----------
   QString fileName;
   QString filePath;
   bool fileSaved;
@@ -44,15 +44,15 @@ public slots:
   void changeSaveState(){
     //qDebug()<<"changed";
     if(firstLoad&&fileSaved){
-        this->setWindowTitle(tr("HJ Editor - ")+fileName);
+        this->setWindowTitle(tr("Editor - ")+fileName);
         firstLoad=false;
         return;
       }
     fileSaved=false;
-    this->setWindowTitle(tr("HJ Editor - ")+fileName+tr("*"));
+    this->setWindowTitle(tr("Editor - ")+fileName+tr("*"));
   }
 
-  //---------å·¥å…·æ å“åº”å‡½æ•°---------
+  //---------¹¤¾ßÀ¸ÏìÓ¦º¯Êı---------
   void newFile();
   void saveFile();
   void openFile();

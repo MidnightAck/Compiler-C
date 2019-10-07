@@ -45,7 +45,7 @@ private:
     QWidget *lineNumberArea;
     QColor lineColor;
     QColor editorColor;
-    QStringList completeList;//å‚¨å­˜è‡ªåŠ¨å¡«å……çš„å…³é”®å­—
+    QStringList completeList;//´¢´æ×Ô¶¯Ìî³äµÄ¹Ø¼ü×Ö
     //QListWidget *completeWidget;
     CompleteListWidget *completeWidget;
     QString getWordOfCursor();

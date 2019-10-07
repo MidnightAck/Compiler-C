@@ -6,7 +6,7 @@ Highlighter::Highlighter(QTextDocument *parent)
 {
     HighlightingRule rule;
 
-    keywordFormat.setForeground(QColor(201,81,116));
+    keywordFormat.setForeground(QColor(249,237,105));
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
     keywordPatterns << "\\bchar\\b" << "\\bclass\\b" << "\\bconst\\b"
@@ -32,7 +32,7 @@ Highlighter::Highlighter(QTextDocument *parent)
 //! [1]
 
 //! [2]
-    //ç±» è§„åˆ™
+    //Àà ¹æÔò
     classFormat.setFontWeight(QFont::Bold);
     classFormat.setForeground(Qt::darkMagenta);
     rule.pattern = QRegularExpression("(?<=class\\s)\\w*");
@@ -41,7 +41,7 @@ Highlighter::Highlighter(QTextDocument *parent)
 //! [2]
 
 //! [3]
-    //æ³¨é‡Šä»£ç  è§„åˆ™
+    //×¢ÊÍ´úÂë ¹æÔò
     singleLineCommentFormat.setForeground(Qt::green);
     rule.pattern = QRegularExpression("//[^\n]*");
     rule.format = singleLineCommentFormat;
@@ -51,7 +51,7 @@ Highlighter::Highlighter(QTextDocument *parent)
 //! [3]
 
 //! [4]
-    //å¤´æ–‡ä»¶åŒ…å«è§„åˆ™
+    //Í·ÎÄ¼þ°üº¬¹æÔò
     quotationFormat.setForeground(Qt::darkGreen);
     rule.pattern = QRegularExpression("(?<=#include\\s)(<.*>)|(?<=#include)(<.*>)|(?<=#include\\s)(\".*\")|(?<=#include)(\".*\")|\".*\"");
     rule.format = quotationFormat;
@@ -59,7 +59,7 @@ Highlighter::Highlighter(QTextDocument *parent)
 //! [4]
 
 //! [5]
-    //å‡½æ•° è§„åˆ™
+    //º¯Êý ¹æÔò
     functionFormat.setFontItalic(true);
     functionFormat.setForeground(QColor(115,182,209));
     rule.pattern = QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()");

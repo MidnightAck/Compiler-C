@@ -4,6 +4,7 @@
 #include<QFileDialog>
 #include <QFile>
 #include <QTextStream>
+
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
@@ -20,13 +21,13 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->mainToolBar->setStyleSheet("QToolButton:hover {background-color:darkgray} QToolBar {background: rgb(82,82,82);border: none;}");
   //--------------------------------
 
-  runIcon.addPixmap(QPixmap(":/image/Run.png"));
-  stopIcon.addPixmap(QPixmap(":/image/stop.png"));
+  runIcon.addPixmap(QPixmap(":./image/Run.png"));
+  stopIcon.addPixmap(QPixmap(":./image/stop.png"));
 
-  //---------窗口背景颜色-------------
+  //---------���ڱ�����ɫ-------------
   QPalette windowPalette=this->palette();
-  windowPalette.setColor(QPalette::Active,QPalette::Window,QColor(82,82,82));
-  windowPalette.setColor(QPalette::Inactive,QPalette::Window,QColor(82,82,82));
+  windowPalette.setColor(QPalette::Active,QPalette::Window,QColor(34,40,49));
+  windowPalette.setColor(QPalette::Inactive,QPalette::Window,QColor(34,40,49));
   this->setPalette(windowPalette);
   //--------------------------------
   initFileData();
@@ -79,7 +80,7 @@ void MainWindow::redo(){
   ui->editor->redo();
 }
 void MainWindow::saveFile(){
-  QString savePath=QFileDialog::getSaveFileName(this,tr("选择保存路径与文件名"),fileName,tr("Cpp File(*.cpp *.c *.h)"));
+  QString savePath=QFileDialog::getSaveFileName(this,tr("choose your path and file name"),fileName,tr("Cpp File(*.cpp *.c *.h)"));
   if(!savePath.isEmpty()){
       QFile out(savePath);
       out.open(QIODevice::WriteOnly|QIODevice::Text);
@@ -101,10 +102,10 @@ void MainWindow::newFile(){
 }
 void MainWindow::openFile(){
   if(!fileSaved){
-      if(QMessageBox::Save==QMessageBox::question(this,tr("文件未保存"),tr("当前文件没有保存，是否保存？"),QMessageBox::Save,QMessageBox::Cancel))
+      if(QMessageBox::Save==QMessageBox::question(this,tr("Files not Saved"),tr("Save or Not��"),QMessageBox::Save,QMessageBox::Cancel))
         saveFile();
     }
-  QString openPath=QFileDialog::getOpenFileName(this,tr("选择要打开的文件"),filePath,tr("Cpp File(*.cpp *.c *.h)"));
+  QString openPath=QFileDialog::getOpenFileName(this,tr("choose file to open"),filePath,tr("Cpp File(*.cpp *.c *.h)"));
   if(!openPath.isEmpty()){
       QFile in(openPath);
       in.open(QIODevice::ReadOnly|QIODevice::Text);
@@ -112,7 +113,7 @@ void MainWindow::openFile(){
       ui->editor->setPlainText(str.readAll());
       QRegularExpression re(tr("(?<=\\/)\\w+\\.cpp|(?<=\\/)\\w+\\.c|(?<=\\/)\\w+\\.h"));
       fileName=re.match(openPath).captured();
-      this->setWindowTitle(tr("HJ Editor - ")+fileName);
+      this->setWindowTitle(tr("Editor - ")+fileName);
       filePath=openPath;
       fileSaved=true;
     }
@@ -124,13 +125,13 @@ void MainWindow::run(){
       return;
     }
   if(!fileSaved){
-      if(QMessageBox::Save==QMessageBox::question(this,tr("文件未保存"),tr("文件保存后才能运行，是否保存？"),QMessageBox::Save,QMessageBox::Cancel))
+      if(QMessageBox::Save==QMessageBox::question(this,tr("Files not Saved"),tr("Files can be run after Saving ,Save or Not��"),QMessageBox::Save,QMessageBox::Cancel))
         saveFile();
     }
   if(fileSaved){
     //if(process!=nullptr)delete process;
     isRunning=true;
-    ui->statusBar->showMessage(tr("程序运行中..."));
+    ui->statusBar->showMessage(tr("running..."));
     ui->outputText->clear();
     output.clear();
     error.clear();
@@ -138,9 +139,18 @@ void MainWindow::run(){
     QRegularExpression re(tr(".*(?=\\.cpp)|.*(?=\\.c)|.*(?=\\.h)"));
     buildPath=re.match(filePath).captured();
     //qDebug()<<buildPath;
-    //此处调用电脑本身mingw进行编译
-    process.start("bash", QStringList() << "-c" << QString(tr("g++ ")+filePath+tr(" -o ")+buildPath+tr(";")+buildPath));
+    //�˴����õ��Ա���mingw���б���
+    //process.start("bash", QStringList() << "-c" << QString(tr("g++ ")+filePath+tr(" -o ")+buildPath+tr(";")+buildPath));
+
+    //QString strPath = "E:/demo/Compiler-all/Test-Editor/Test/Compiler.exe";
+    //process.start(strPath);
+    buildPath+=".cpp";
+    QString program =  "./Compiler.exe";
+    QStringList arguments;
+    arguments<<buildPath;//���ݵ�exe�Ĳ���
+    process.start(program,arguments);
     process.waitForStarted();
+    //run();
     ui->outputText->setFocus();
     ui->actionRun->setIcon(stopIcon);
     }
@@ -168,11 +178,12 @@ void MainWindow::inputData(QString data){
 }
 void MainWindow::closeEvent(QCloseEvent *event){
   if(!fileSaved){
-      if(QMessageBox::Save==QMessageBox::question(this,tr("未保存就要退出？"),tr("当前文件没有保存，是否保存？不保存文件改动将会丢失"),QMessageBox::Save,QMessageBox::Cancel))
+      if(QMessageBox::Save==QMessageBox::question(this,tr("Files not Saved��"),tr("Save or Not?"),QMessageBox::Save,QMessageBox::Cancel))
         saveFile();
       fileSaved=true;
     }
 }
 void MainWindow::about(){
-  QMessageBox::information(this,tr("关于"),tr(" "),QMessageBox::Ok);
+
+  QMessageBox::information(this,tr("About"),"Team 12\n1651390 Liu Siyuan\n1753642 Zhao Deze\n1751796 Li Chunbo",QMessageBox::Ok);
 }

@@ -16,7 +16,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
     highlightCurrentLine();
     //set color value
     lineColor.setRgb(56,60,69);
-    editorColor.setRgb(34,39,49);
+    editorColor.setRgb(34,40,49);
 
     //set background color
     QPalette p = this->palette();
@@ -24,7 +24,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
     p.setColor(QPalette::Inactive, QPalette::Base, editorColor);
     p.setColor(QPalette::Text,Qt::white);
     this->setPalette(p);
-    //åˆå§‹åŒ–è¡¥å…¨åˆ—è¡¨
+    //³õÊ¼»¯²¹È«ÁĞ±í
     setUpCompleteList();
     completeWidget= new CompleteListWidget(this);
     completeWidget->hide();
@@ -38,7 +38,7 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 
 int CodeEditor::lineNumberAreaWidth()
 {
-    int digits = 1;//è¡Œæ•°æ•°å­—çš„ä½æ•°
+    int digits = 1;//ĞĞÊıÊı×ÖµÄÎ»Êı
     int max = qMax(1, blockCount());
     while (max >= 10) {
         max /= 10;
@@ -55,7 +55,7 @@ int CodeEditor::lineNumberAreaWidth()
 
 //![slotUpdateExtraAreaWidth]
 
-//è®¾å®šå·¦è¾¹ç•™ç™½çš„å®½åº¦ï¼Œå‚æ•°æ— æ•ˆï¼Œæ²¡æœ‰ç”¨åˆ°
+//Éè¶¨×ó±ßÁô°×µÄ¿í¶È£¬²ÎÊıÎŞĞ§£¬Ã»ÓĞÓÃµ½
 void CodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
     setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
@@ -64,7 +64,7 @@ void CodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 //![slotUpdateExtraAreaWidth]
 
 //![slotUpdateRequest]
-//æ–‡æœ¬æ¡†æ»šåŠ¨æ—¶åŒæ—¶æ»šåŠ¨è¡Œæ•°
+//ÎÄ±¾¿ò¹ö¶¯Ê±Í¬Ê±¹ö¶¯ĞĞÊı
 void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
     if (dy)
@@ -80,7 +80,7 @@ void CodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 //![slotUpdateRequest]
 
 //![resizeEvent]
-//å°ºå¯¸è°ƒæ•´å‡½æ•°
+//³ß´çµ÷Õûº¯Êı
 void CodeEditor::resizeEvent(QResizeEvent *e)
 {
     QPlainTextEdit::resizeEvent(e);
@@ -115,7 +115,7 @@ void CodeEditor::highlightCurrentLine()
 //![cursorPositionChanged]
 
 //![extraAreaPaintEvent_0]
-//æ‰“å°è¡Œå·ï¼Œæ­¤å‡½æ•°è¢«paintEvent è°ƒç”¨ï¼ŒpaintEventåœ¨å¤´æ–‡ä»¶é‡Œè¢«é‡å†™
+//´òÓ¡ĞĞºÅ£¬´Ëº¯Êı±»paintEvent µ÷ÓÃ£¬paintEventÔÚÍ·ÎÄ¼şÀï±»ÖØĞ´
 void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
     QPainter painter(lineNumberArea);
@@ -147,7 +147,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 }
 //![extraAreaPaintEvent_2]
 
-//è‡ªåŠ¨è¡¥å…¨
+//×Ô¶¯²¹È«
 void CodeEditor::keyPressEvent(QKeyEvent *event){
   //qDebug()<<event->key();
   if(event->modifiers()==Qt::ShiftModifier&&event->key()==40){
@@ -178,21 +178,21 @@ void CodeEditor::keyPressEvent(QKeyEvent *event){
       completeState=CompleteState::Hide;
       completeWidget->hide();
     }//*
-  else if(event->key()==Qt::Key_Return){//å›è½¦ä¸‹è¡Œå±‚çº§è‡ªåŠ¨ç¼©è¿›åŠŸèƒ½
-      //è·å¾—æœ¬è¡Œçš„æ–‡æœ¬
+  else if(event->key()==Qt::Key_Return){//»Ø³µÏÂĞĞ²ã¼¶×Ô¶¯Ëõ½ø¹¦ÄÜ
+      //»ñµÃ±¾ĞĞµÄÎÄ±¾
       QString temp=this->document()->findBlockByLineNumber(this->textCursor().blockNumber()).text();
       QPlainTextEdit::keyPressEvent(event);
       if(temp.count()<=0)return;
-      //è¾“å‡ºå›è½¦é‚£ä¸€è¡Œçš„å‰è·
+      //Êä³ö»Ø³µÄÇÒ»ĞĞµÄÇ°¾à
       foreach(const QChar &c,temp){
           if(c.isSpace())this->insertPlainText(c);
           else break;
         }
-      //å¦‚æœæ˜¯for() while() switch() if()åˆ™ç¼©è¿›ä¸€ä¸ªtab,ä¸€ç§ç²—ç•¥åœ°åšæ³•å¯èƒ½ä¼šå‡ºé”™
+      //Èç¹ûÊÇfor() while() switch() if()ÔòËõ½øÒ»¸ötab,Ò»ÖÖ´ÖÂÔµØ×ö·¨¿ÉÄÜ»á³ö´í
       if(temp.at(temp.count()-1)==')'&&(temp.contains(tr("for("))||temp.contains(tr("while("))
                                         ||temp.contains(tr("switch("))||temp.contains(tr("if("))))
           this->insertPlainText(tr("\t"));
-      //å¦‚æœæ˜¯{ åˆ™ç¼©è¿›å¹¶è¡¥}
+      //Èç¹ûÊÇ{ ÔòËõ½ø²¢²¹}
       if(temp.at(temp.count()-1)=='{'){
           this->insertPlainText(tr("\t"));
           QTextCursor cursor=this->textCursor();
@@ -204,7 +204,7 @@ void CodeEditor::keyPressEvent(QKeyEvent *event){
             }
           this->insertPlainText(tr("}"));
           cursor.setPosition(pos);
-          this->setTextCursor(cursor);//è¿”å›ä¸­é—´ä¸€è¡Œ
+          this->setTextCursor(cursor);//·µ»ØÖĞ¼äÒ»ĞĞ
         }
     }//*/
   else if(event->key()==Qt::Key_Backspace){
@@ -249,7 +249,7 @@ void CodeEditor::setUpCompleteList(){
               <<"default"<<"try"<<"return"<<"throw"<<"catch"<<"goto"<<"else"
               <<"extren"<<"this"<<"switch"<<"#include <>"<<"#include \"\""<<"#define"<<"iostream";
 }
-//å¾—åˆ°å½“å‰å…‰æ ‡ä½ç½®çš„å­—ç¬¦ä¸²
+//µÃµ½µ±Ç°¹â±êÎ»ÖÃµÄ×Ö·û´®
 QString CodeEditor::getWordOfCursor(){
   int pos=this->textCursor().position()-1;
   QVector<QChar> words;
@@ -270,12 +270,12 @@ QString CodeEditor::getWordOfCursor(){
 }
 
 void CodeEditor::showCompleteWidget(){
-  if(completeState==CompleteState::Ignore)return;//å¿½ç•¥å…‰æ ‡å’Œæ–‡æœ¬å˜åŒ–çš„å“åº”,é¿å…é™·å…¥äº‹ä»¶æ­»å¾ªç¯å’Œäº’ç›¸é’³åˆ¶
+  if(completeState==CompleteState::Ignore)return;//ºöÂÔ¹â±êºÍÎÄ±¾±ä»¯µÄÏìÓ¦,±ÜÃâÏİÈëÊÂ¼şËÀÑ­»·ºÍ»¥ÏàÇ¯ÖÆ
   completeWidget->hide();
   completeState=CompleteState::Hide;
   QString word=this->getWordOfCursor();
   completeWidget->clear();
-  if(!word.isEmpty()){//å…‰æ ‡æ‰€åœ¨å•è¯æ˜¯ä¸æ˜¯åˆæ³•(èƒ½ä¸èƒ½è”æƒ³)
+  if(!word.isEmpty()){//¹â±êËùÔÚµ¥´ÊÊÇ²»ÊÇºÏ·¨(ÄÜ²»ÄÜÁªÏë)
       int maxSize=0;
       QMap<QString,int> distance;
       vector<QString> itemList;
@@ -288,8 +288,8 @@ void CodeEditor::showCompleteWidget(){
 
             }
         }
-      //æœ‰æ²¡æœ‰åŒ¹é…çš„å­—ç¬¦
-      if(itemList.size()>0){//å¦‚æœæœ‰çš„è¯
+      //ÓĞÃ»ÓĞÆ¥ÅäµÄ×Ö·û
+      if(itemList.size()>0){//Èç¹ûÓĞµÄ»°
       sort(itemList.begin(),itemList.end(),[&](const QString &s1,const QString &s2)->bool{return distance[s1]<distance[s2]; });
       foreach(const QString& item,itemList){
           completeWidget->addItem(new QListWidgetItem(item));

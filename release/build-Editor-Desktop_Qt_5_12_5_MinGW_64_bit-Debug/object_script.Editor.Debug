@@ -1,0 +1,10 @@
+debug/codeeditor.o
+debug/completelistwidget.o
+debug/console.o
+debug/highlighter.o
+debug/main.o
+debug/mainwindow.o
+debug/moc_codeeditor.o
+debug/moc_console.o
+debug/moc_highlighter.o
+debug/moc_mainwindow.o
